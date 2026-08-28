@@ -1,0 +1,810 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Silver Solutions</title>
+<meta name="description" content="A remote-first Odoo implementation, training, and support partner working worldwide with a focus on the Saudi market. All Odoo versions, Community and Enterprise, certified on Odoo 18 and 19.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Expanded:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=Cairo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+<style>
+  /* ============ BRAND ASSETS (inlined at build time) ============ */
+  :root{
+    --mark-color-url: url("__ASSET:mark-color.png__");
+    --mark-white-url: url("__ASSET:mark-white.png__");
+    --logo-h-color-url: url("__ASSET:logo-h-color.png__");
+    --logo-h-dark-url: url("__ASSET:logo-h-dark.png__");
+    --mark-src: var(--mark-color-url);
+    --logo-h-src: var(--logo-h-color-url);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --mark-src: var(--mark-white-url);
+      --logo-h-src: var(--logo-h-dark-url);
+    }
+  }
+  :root[data-theme="dark"]{
+    --mark-src: var(--mark-white-url);
+    --logo-h-src: var(--logo-h-dark-url);
+  }
+
+  /* ============ TOKENS ============ */
+  :root{
+    --magenta-600:#93147A;
+    --magenta-700:#7A1167;
+    --magenta-900:#45083B;
+    --charcoal-700:#3E3B41;
+    --charcoal-500:#726C77;
+    --sand-500:#B98A4E;
+    --sand-600:#9A6E39;
+    --paper-50:#FBF8FA;
+    --paper-100:#F2EBEF;
+    --paper-200:#E6DAE2;
+    --ink-900:#1F1B21;
+
+    --bg: var(--paper-50);
+    --surface: #FFFFFF;
+    --surface-2: var(--paper-100);
+    --text: var(--ink-900);
+    --text-muted: var(--charcoal-500);
+    --accent: var(--magenta-600);
+    --accent-strong: var(--magenta-700);
+    --accent-soft: #F3E3EF;
+    --accent-deep: var(--magenta-900);
+    --gold: var(--sand-500);
+    --gold-strong: var(--sand-600);
+    --border: var(--paper-200);
+    --wordmark: var(--charcoal-700);
+    --glow-1: rgba(147,20,122,0.26);
+    --glow-2: rgba(147,20,122,0.10);
+    --shadow: 0 24px 64px -32px rgba(69,8,59,0.38);
+    --node-line: rgba(69,8,59,0.16);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#1A1420;
+      --surface:#241C29;
+      --surface-2:#2C222F;
+      --text:#F4EEF2;
+      --text-muted:#BDB1C4;
+      --accent:#E066C4;
+      --accent-strong:#EC8FD6;
+      --accent-soft:rgba(224,102,196,0.14);
+      --accent-deep:#F6C6EA;
+      --gold:#D9AD70;
+      --gold-strong:#E7C393;
+      --border:rgba(244,238,242,0.14);
+      --wordmark:#F4EEF2;
+      --glow-1: rgba(224,102,196,0.24);
+      --glow-2: rgba(224,102,196,0.09);
+      --shadow:0 24px 64px -24px rgba(0,0,0,0.65);
+      --node-line: rgba(244,238,242,0.14);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#1A1420;
+    --surface:#241C29;
+    --surface-2:#2C222F;
+    --text:#F4EEF2;
+    --text-muted:#BDB1C4;
+    --accent:#E066C4;
+    --accent-strong:#EC8FD6;
+    --accent-soft:rgba(224,102,196,0.14);
+    --accent-deep:#F6C6EA;
+    --gold:#D9AD70;
+    --gold-strong:#E7C393;
+    --border:rgba(244,238,242,0.14);
+    --wordmark:#F4EEF2;
+    --glow-1: rgba(224,102,196,0.24);
+    --glow-2: rgba(224,102,196,0.09);
+    --shadow:0 24px 64px -24px rgba(0,0,0,0.65);
+    --node-line: rgba(244,238,242,0.14);
+  }
+
+  /* ============ BASE ============ */
+  *,*::before,*::after{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *,*::before,*::after{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important; }
+  }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Manrope', system-ui, -apple-system, sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{ margin:0; text-wrap:balance; font-weight:700; }
+  p{ margin:0; }
+  img,svg{ max-width:100%; display:block; }
+  a{ color:inherit; }
+  ul{ margin:0; padding:0; list-style:none; }
+  button{ font:inherit; cursor:pointer; }
+
+  .ar{ font-family:'Cairo','Tahoma',sans-serif; }
+  html:not([data-lang="ar"]) .ar{ display:none; }
+  html[data-lang="ar"] .en{ display:none; }
+  html[data-lang="ar"]{ direction:rtl; }
+  h1 .en, h2 .en, .display.en, .logo-word.en{ font-family:'Archivo Expanded','Manrope',sans-serif; }
+  h1 .ar, h2 .ar, .display.ar, .logo-word.ar{ font-weight:800; }
+  .mono{ font-family:'JetBrains Mono','Menlo',monospace; }
+
+  .wrap{ max-width:1180px; margin-inline:auto; padding-inline:clamp(20px,5vw,48px); }
+  section{ padding-block:clamp(56px,9vw,112px); }
+
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:0.55em;
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.78rem; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--accent-strong); font-weight:600; margin-bottom:14px;
+  }
+  .eyebrow::before{ content:""; width:22px; height:2px; background:var(--gold); display:inline-block; }
+  html[data-lang="ar"] .eyebrow::before{ order:2; }
+
+  h2.section-title{ font-size:clamp(1.7rem,3.2vw,2.5rem); letter-spacing:-0.01em; }
+  .section-lede{ margin-top:16px; max-width:62ch; color:var(--text-muted); font-size:1.05rem; }
+
+  /* ============ NAV ============ */
+  header.site-nav{
+    position:sticky; top:0; z-index:50;
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav-row{ display:flex; align-items:center; justify-content:space-between; padding-block:14px; gap:16px; }
+  .brand{ display:block; text-decoration:none; flex:none; }
+  .brand-logo{
+    width:clamp(132px,16vw,164px); aspect-ratio:440/157;
+    background-image:var(--logo-h-src);
+    background-size:contain; background-repeat:no-repeat; background-position:center;
+    transition:transform .25s ease;
+  }
+  .brand:hover .brand-logo{ transform:translateY(-1px) scale(1.02); }
+
+  nav.primary-links{ display:flex; align-items:center; gap:28px; }
+  nav.primary-links a{ text-decoration:none; font-size:0.94rem; font-weight:600; color:var(--text-muted); transition:color .15s; }
+  nav.primary-links a:hover, nav.primary-links a:focus-visible{ color:var(--accent-strong); }
+
+  .nav-actions{ display:flex; align-items:center; gap:12px; }
+  .lang-toggle{
+    background:var(--surface-2); border:1px solid var(--border); border-radius:999px;
+    padding:6px; display:flex; gap:2px;
+  }
+  .lang-toggle button{
+    border:none; background:transparent; padding:6px 12px; border-radius:999px;
+    font-family:'JetBrains Mono',monospace; font-size:0.76rem; font-weight:600; letter-spacing:0.04em;
+    color:var(--text-muted);
+  }
+  .lang-toggle button[aria-pressed="true"]{ background:var(--accent); color:#fff; }
+  .lang-toggle button:focus-visible, a:focus-visible, .btn:focus-visible,
+  .theme-toggle:focus-visible{ outline:2px solid var(--accent-strong); outline-offset:2px; }
+
+  .theme-toggle{
+    display:flex; align-items:center; justify-content:center;
+    width:38px; height:38px; flex:none; padding:0;
+    background:var(--surface-2); border:1px solid var(--border); border-radius:999px;
+    color:var(--text-muted); transition:color .15s, border-color .15s;
+  }
+  .theme-toggle:hover{ color:var(--accent-strong); border-color:var(--accent); }
+  .theme-toggle svg{ width:17px; height:17px; }
+  /* the icon shows the theme you'd switch TO */
+  .theme-toggle .icon-moon{ display:block; }
+  .theme-toggle .icon-sun{ display:none; }
+  :root[data-theme="dark"] .theme-toggle .icon-moon{ display:none; }
+  :root[data-theme="dark"] .theme-toggle .icon-sun{ display:block; }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]) .theme-toggle .icon-moon{ display:none; }
+    :root:not([data-theme="light"]) .theme-toggle .icon-sun{ display:block; }
+  }
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:11px 22px; border-radius:10px; font-weight:700; font-size:0.94rem;
+    text-decoration:none; border:1px solid transparent; transition:transform .15s, box-shadow .15s, background .15s;
+    white-space:nowrap;
+  }
+  .btn-primary{ background:var(--accent); color:#fff; box-shadow:var(--shadow); }
+  .btn-primary:hover{ transform:translateY(-1px); background:var(--accent-strong); }
+  .btn-ghost{ background:transparent; color:var(--text); border-color:var(--border); }
+  .btn-ghost:hover{ border-color:var(--accent); color:var(--accent-strong); }
+
+  .menu-toggle{ display:none; background:none; border:1px solid var(--border); border-radius:8px; padding:8px 10px; }
+  .menu-toggle span{ display:block; width:18px; height:2px; background:var(--text); margin:3px 0; }
+
+  /* ============ HERO ============ */
+  .hero{ padding-block:clamp(48px,8vw,88px) clamp(40px,6vw,72px); position:relative; overflow:hidden; }
+  .hero-grid{ display:grid; grid-template-columns:1.15fr 0.85fr; gap:clamp(32px,5vw,64px); align-items:center; }
+  .hero h1{ font-size:clamp(2.2rem,4.6vw,3.6rem); line-height:1.08; letter-spacing:-0.015em; }
+  .hero h1 .accent{ color:var(--accent-strong); }
+  .hero-sub{ margin-top:22px; font-size:1.1rem; color:var(--text-muted); max-width:56ch; }
+  .hero-ctas{ display:flex; flex-wrap:wrap; gap:14px; margin-top:32px; }
+  .trust-row{ display:flex; flex-wrap:wrap; gap:10px 22px; margin-top:40px; padding-top:24px; border-top:1px solid var(--border); }
+  .trust-item{ display:flex; align-items:center; gap:8px; font-size:0.86rem; font-weight:600; color:var(--text-muted); }
+  .trust-item .dot{ width:7px; height:7px; border-radius:50%; background:var(--gold); flex:none; }
+
+  /* ---- Animated brand mark ---- */
+  .hero-art{
+    position:relative; aspect-ratio:1/1;
+    display:flex; align-items:center; justify-content:center;
+  }
+  /* height-driven: the mark is portrait inside a square frame, so sizing by
+     width would overflow the frame. */
+  .mark-stage{ position:relative; height:min(100%,520px); aspect-ratio:555/760; max-width:100%; isolation:isolate; }
+
+  /* soft magenta bloom behind the mark */
+  .mark-glow{
+    position:absolute; inset:-18% -12%; z-index:0;
+    background:radial-gradient(circle at 50% 46%,
+      var(--glow-1) 0%,
+      var(--glow-2) 38%,
+      transparent 68%);
+    filter:blur(14px);
+    /* deliberately un-animated: a transform/opacity animation here gets
+       composited above its siblings and washes out the logo. */
+    opacity:.9;
+  }
+
+  /* slow orbit ring — echoes the connected-node idea in the mark itself */
+  .mark-orbit{
+    position:absolute; left:50%; top:50%; width:118%; aspect-ratio:1/1; z-index:1;
+    translate:-50% -50%;
+    border:1px dashed var(--node-line); border-radius:50%;
+    animation:markOrbit 44s linear infinite;
+  }
+  .mark-orbit::after{
+    content:""; position:absolute; top:-4px; left:50%; width:8px; height:8px;
+    margin-left:-4px; border-radius:50%; background:var(--gold);
+  }
+
+  /* one wrapper carries the float, so the logo and its highlight stay locked together */
+  .mark-float{
+    position:absolute; inset:0; z-index:2;
+    animation:markFloat 7s ease-in-out infinite;
+  }
+
+  /* the real logo */
+  .mark-img{
+    position:absolute; inset:0;
+    background-image:var(--mark-src);
+    background-size:contain; background-repeat:no-repeat; background-position:center;
+  }
+
+  @keyframes markFloat{
+    0%,100%{ transform:translateY(0) rotate(0deg); }
+    50%{ transform:translateY(-10px) rotate(-1.1deg); }
+  }
+  @keyframes markOrbit{ to{ rotate:360deg; } }
+  }
+
+  /* entrance */
+  .mark-stage{ opacity:0; }
+  .mark-stage.is-in{ animation:markEnter 1s cubic-bezier(.2,.75,.25,1) forwards; }
+  @keyframes markEnter{
+    from{ opacity:0; transform:scale(.86) translateY(14px); }
+    to  { opacity:1; transform:none; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .mark-orbit,.mark-float,.mark-stage.is-in{ animation:none; }
+    .mark-stage{ opacity:1; }
+  }
+
+  /* ============ MODULE / SERVICE CARDS ============ */
+  .services-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; margin-top:44px; background:var(--border); border:1px solid var(--border); border-radius:18px; overflow:hidden; }
+  .service-card{ background:var(--surface); padding:30px 26px; display:flex; flex-direction:column; gap:14px; min-height:230px; }
+  .service-num{ font-family:'JetBrains Mono',monospace; font-size:0.78rem; color:var(--gold-strong); font-weight:600; }
+  .service-icon{ width:38px; height:38px; }
+  .service-card h3{ font-size:1.08rem; }
+  .service-card p{ color:var(--text-muted); font-size:0.94rem; }
+
+  /* ============ WHY US ============ */
+  .why-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:20px; margin-top:44px; }
+  .why-card{ background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:28px; display:flex; gap:18px; }
+  .why-card .glyph{ flex:none; width:44px; height:44px; border-radius:12px; background:var(--accent-soft); display:flex; align-items:center; justify-content:center; }
+  .why-card .glyph svg{ width:22px; height:22px; }
+  .why-card h3{ font-size:1.02rem; margin-bottom:6px; }
+  .why-card p{ color:var(--text-muted); font-size:0.93rem; }
+
+  /* ============ PROCESS ============ */
+  .process-track{ position:relative; margin-top:56px; }
+  .process-line{ position:absolute; top:24px; inset-inline:0; height:2px; background:var(--node-line); }
+  .process-steps{ display:grid; grid-template-columns:repeat(5,1fr); gap:20px; position:relative; }
+  .step{ display:flex; flex-direction:column; gap:14px; }
+  .step-index{
+    width:48px; height:48px; border-radius:50%; background:var(--surface); border:2px solid var(--accent);
+    color:var(--accent-strong); font-family:'JetBrains Mono',monospace; font-weight:700; font-size:0.95rem;
+    display:flex; align-items:center; justify-content:center; position:relative; z-index:1;
+  }
+  .step h3{ font-size:0.98rem; }
+  .step p{ color:var(--text-muted); font-size:0.88rem; }
+
+  /* ============ CERT STRIP ============ */
+  .cert-strip{ background:var(--accent-deep-bg,var(--surface-2)); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+  .cert-strip .wrap{ padding-block:34px; display:flex; flex-wrap:wrap; align-items:center; gap:16px 28px; justify-content:space-between; }
+  .cert-label{ font-size:0.88rem; color:var(--text-muted); font-weight:600; }
+  .cert-badges{ display:flex; flex-wrap:wrap; gap:12px; }
+  .cert-badge{
+    display:flex; align-items:center; gap:8px; padding:9px 16px; border-radius:999px;
+    background:var(--surface); border:1px solid var(--border); font-size:0.86rem; font-weight:700;
+  }
+  .cert-badge svg{ width:16px; height:16px; color:var(--gold-strong); }
+
+  /* ============ TEAM ============ */
+  .team-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:20px; margin-top:44px; }
+  .team-card{ background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:26px 22px; text-align:center; }
+  .avatar-initials{
+    width:64px; height:64px; margin-inline:auto; margin-bottom:16px;
+    border-radius:18px; display:flex; align-items:center; justify-content:center;
+    font-family:'Archivo Expanded','Manrope',sans-serif; font-weight:700; font-size:1.15rem;
+    letter-spacing:0.02em; background:var(--accent-soft); color:var(--accent-strong);
+  }
+  .avatar-initials.alt{ background:var(--surface-2); color:var(--text); }
+  .team-card h3{ font-size:0.98rem; }
+  .team-card .job{ margin-top:6px; font-size:0.86rem; font-weight:600; color:var(--gold-strong); }
+  .team-card .role-tag{ margin-top:8px; display:inline-block; font-family:'JetBrains Mono',monospace; font-size:0.72rem; color:var(--accent-strong); background:var(--accent-soft); padding:4px 10px; border-radius:999px; }
+  .team-card p.desc{ margin-top:12px; font-size:0.86rem; color:var(--text-muted); }
+
+  /* ============ CONTACT ============ */
+  .contact-shell{ background:var(--surface); border:1px solid var(--border); border-radius:22px; padding:clamp(28px,4vw,52px); margin-top:44px; display:grid; grid-template-columns:1fr 1fr; gap:40px; }
+  .contact-copy h2{ font-size:clamp(1.5rem,2.6vw,2rem); }
+  .contact-copy p{ margin-top:14px; color:var(--text-muted); max-width:44ch; }
+  .contact-tiles{ display:flex; flex-direction:column; gap:12px; }
+  .contact-tile{
+    display:flex; align-items:center; gap:16px;
+    border:1px solid var(--border); border-radius:12px; padding:16px 18px;
+    background:var(--surface-2); text-decoration:none;
+    transition:border-color .15s, transform .15s;
+  }
+  .contact-tile:hover{ border-color:var(--accent); transform:translateY(-1px); }
+  .contact-tile .tile-icon{
+    flex:none; width:40px; height:40px; border-radius:11px; background:var(--accent-soft);
+    display:flex; align-items:center; justify-content:center; color:var(--accent-strong);
+  }
+  .contact-tile .tile-icon svg{ width:19px; height:19px; }
+  .contact-tile .field-label{ display:block; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-muted); font-family:'JetBrains Mono',monospace; }
+  .contact-tile .field-value{
+    display:block; margin-top:3px; font-weight:700; color:var(--text); font-size:1.02rem;
+    direction:ltr; unicode-bidi:isolate; font-variant-numeric:tabular-nums;
+  }
+  html[data-lang="ar"] .contact-tile .field-value{ text-align:right; }
+
+  /* ============ FOOTER ============ */
+  footer{ border-top:1px solid var(--border); padding-block:36px; }
+  .footer-row{ display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:16px; }
+  .footer-copy{ font-size:0.85rem; color:var(--text-muted); }
+  .footer-links{ display:flex; gap:20px; }
+  .footer-links a{ text-decoration:none; font-size:0.85rem; color:var(--text-muted); }
+  .footer-links a:hover{ color:var(--accent-strong); }
+
+  /* ============ REVEAL ============ */
+  .reveal{ opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease; }
+  .reveal.is-visible{ opacity:1; transform:none; }
+  @media (prefers-reduced-motion: reduce){ .reveal{ opacity:1; transform:none; } }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width:980px){
+    nav.primary-links{ display:none; }
+    .nav-cta{ display:none; }
+    .menu-toggle{ display:inline-flex; flex-direction:column; align-items:center; justify-content:center; }
+    .hero-grid{ grid-template-columns:1fr; }
+    /* width:100% is required — margin-inline:auto cancels grid stretch, and
+       without it .mark-stage's percentage width resolves against nothing. */
+    .hero-art{ width:100%; max-width:270px; margin-inline:auto; order:-1; }
+    .services-grid{ grid-template-columns:repeat(2,1fr); }
+    .why-grid{ grid-template-columns:1fr; }
+    .process-steps{ grid-template-columns:repeat(3,1fr); row-gap:32px; }
+    .process-line{ display:none; }
+    .team-grid{ grid-template-columns:repeat(2,1fr); }
+    .contact-shell{ grid-template-columns:1fr; }
+  }
+  @media (max-width:620px){
+    .services-grid{ grid-template-columns:1fr; }
+    .process-steps{ grid-template-columns:1fr 1fr; }
+    .cert-strip .wrap{ flex-direction:column; align-items:flex-start; }
+  }
+</style>
+
+<header class="site-nav">
+  <div class="wrap nav-row">
+    <a class="brand" href="#top" aria-label="Silver Solutions — home">
+      <div class="brand-logo" role="img" aria-label="Silver Solutions"></div>
+    </a>
+
+    <nav class="primary-links" aria-label="Primary">
+      <a href="#about"><span class="en">About</span><span class="ar">من نحن</span></a>
+      <a href="#services"><span class="en">Services</span><span class="ar">خدماتنا</span></a>
+      <a href="#why"><span class="en">Why Us</span><span class="ar">لماذا نحن</span></a>
+      <a href="#process"><span class="en">Process</span><span class="ar">منهجية العمل</span></a>
+      <a href="#team"><span class="en">Team</span><span class="ar">فريق العمل</span></a>
+      <a href="#contact"><span class="en">Contact</span><span class="ar">تواصل معنا</span></a>
+    </nav>
+
+    <div class="nav-actions">
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" data-lang-btn="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang-btn="ar" aria-pressed="false">AR</button>
+      </div>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch theme">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/>
+        </svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4.2"/>
+          <path d="M12 2.5v2.2M12 19.3v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"/>
+        </svg>
+      </button>
+      <a class="btn btn-primary nav-cta" href="#contact">
+        <span class="en">Book a Consultation</span><span class="ar">احجز استشارة</span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <nav class="primary-links" id="mobileMenu" aria-label="Mobile" style="display:none; flex-direction:column; padding:18px clamp(20px,5vw,48px) 22px; gap:16px; border-top:1px solid var(--border);">
+    <a href="#about"><span class="en">About</span><span class="ar">من نحن</span></a>
+    <a href="#services"><span class="en">Services</span><span class="ar">خدماتنا</span></a>
+    <a href="#why"><span class="en">Why Us</span><span class="ar">لماذا نحن</span></a>
+    <a href="#process"><span class="en">Process</span><span class="ar">منهجية العمل</span></a>
+    <a href="#team"><span class="en">Team</span><span class="ar">فريق العمل</span></a>
+    <a href="#contact"><span class="en">Contact</span><span class="ar">تواصل معنا</span></a>
+  </nav>
+</header>
+
+<main id="top">
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="reveal is-visible">
+        <div class="eyebrow"><span class="en">Odoo Partner — Worldwide Delivery, Saudi Market Focus</span><span class="ar">شريك أودو — خدمات حول العالم بتركيز على السوق السعودي</span></div>
+        <h1>
+          <span class="en">Odoo expertise, delivered from wherever your business needs it<span class="accent">.</span></span>
+          <span class="ar">خبرة أودو، أينما احتاج عملك إليها<span class="accent">.</span></span>
+        </h1>
+        <p class="hero-sub">
+          <span class="en">Silver Solutions delivers Odoo implementation, training, and support remotely to clients anywhere in the world — with deep focus on the Saudi market. We work across every Odoo version, Community and Enterprise, and our consultants are certified on Odoo 18 and Odoo 19.</span>
+          <span class="ar">الحلول الفضية تقدّم خدمات تطبيق أودو والتدريب والدعم عن بُعد لعملائها في أي مكان في العالم — مع تركيز عميق على السوق السعودي. نعمل على جميع إصدارات أودو، النسخة المجتمعية والمؤسسية، واستشاريونا معتمدون في أودو 18 وأودو 19.</span>
+        </p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="#contact"><span class="en">Book a Free Consultation</span><span class="ar">احجز استشارة مجانية</span></a>
+          <a class="btn btn-ghost" href="#services"><span class="en">See Our Services</span><span class="ar">تعرّف على خدماتنا</span></a>
+        </div>
+        <div class="trust-row">
+          <div class="trust-item"><span class="dot"></span><span class="en">Certified on Odoo 18 &amp; 19</span><span class="ar">معتمدون في أودو 18 و19</span></div>
+          <div class="trust-item"><span class="dot"></span><span class="en">Every Odoo Version</span><span class="ar">جميع إصدارات أودو</span></div>
+          <div class="trust-item"><span class="dot"></span><span class="en">Community &amp; Enterprise</span><span class="ar">النسخة المجتمعية والمؤسسية</span></div>
+          <div class="trust-item"><span class="dot"></span><span class="en">100% Remote Delivery</span><span class="ar">تسليم عن بُعد بالكامل</span></div>
+          <div class="trust-item"><span class="dot"></span><span class="en">ZATCA-Ready Implementations</span><span class="ar">جاهزون لمتطلبات هيئة الزكاة والضريبة</span></div>
+        </div>
+      </div>
+
+      <div class="hero-art" aria-hidden="true">
+        <div class="mark-stage" id="markStage">
+          <div class="mark-glow"></div>
+          <div class="mark-orbit"></div>
+          <div class="mark-float">
+            <div class="mark-img"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about">
+    <div class="wrap reveal">
+      <div class="eyebrow"><span class="en">About Silver Solutions</span><span class="ar">عن الحلول الفضية</span></div>
+      <h2 class="section-title"><span class="en">A remote-first team, built around Odoo certification.</span><span class="ar">فريق عمل عن بُعد بالكامل، مبني حول شهادات أودو المعتمدة.</span></h2>
+      <p class="section-lede">
+        <span class="en">We're a team of certified Odoo functional and technical consultants working with businesses worldwide, without an on-site footprint. We implement every Odoo version — Community or Enterprise — and hold current certifications on Odoo 18 and 19, so you get guidance that matches the release you're actually running. Saudi Arabia is where we go deepest: Arabic support and ZATCA compliance are native to how we scope every project.</span>
+        <span class="ar">نحن فريق من الاستشاريين الوظيفيين والتقنيين المعتمدين في أودو، نعمل مع الشركات حول العالم دون الحاجة لوجود ميداني. ننفّذ جميع إصدارات أودو — المجتمعية والمؤسسية — ونحمل شهادات حديثة في أودو 18 و19، لتحصل على إرشادات تناسب الإصدار الذي تعمل عليه فعليًا. والسوق السعودي هو مجال تخصصنا الأعمق: الدعم بالعربية والامتثال لمتطلبات هيئة الزكاة والضريبة جزء أصيل من تحديد نطاق كل مشروع.</span>
+      </p>
+      <div class="trust-row" style="border-top:none; padding-top:0; margin-top:32px;">
+        <div class="trust-item"><span class="dot"></span><span class="en">Certified: Odoo 18 &amp; 19</span><span class="ar">معتمدون: أودو 18 و19</span></div>
+        <div class="trust-item"><span class="dot"></span><span class="en">All Versions Supported</span><span class="ar">ندعم جميع الإصدارات</span></div>
+        <div class="trust-item"><span class="dot"></span><span class="en">Community &amp; Enterprise</span><span class="ar">المجتمعية والمؤسسية</span></div>
+        <div class="trust-item"><span class="dot"></span><span class="en">Worldwide, Saudi Focus</span><span class="ar">حول العالم، بتركيز سعودي</span></div>
+        <div class="trust-item"><span class="dot"></span><span class="en">Arabic + English Support</span><span class="ar">دعم بالعربية والإنجليزية</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SERVICES ============ -->
+  <section id="services">
+    <div class="wrap reveal">
+      <div class="eyebrow"><span class="en">What We Do</span><span class="ar">ماذا نقدّم</span></div>
+      <h2 class="section-title"><span class="en">Every module your business runs on, one certified team.</span><span class="ar">كل وحدة يعمل بها عملك، بإشراف فريق معتمد واحد.</span></h2>
+      <div class="services-grid">
+        <div class="service-card">
+          <span class="service-num">01</span>
+          <svg class="service-icon" viewBox="0 0 40 40" fill="none"><rect x="6" y="6" width="12" height="12" rx="3" fill="var(--accent)"/><rect x="22" y="6" width="12" height="12" rx="3" fill="var(--accent-soft)"/><rect x="6" y="22" width="12" height="12" rx="3" fill="var(--accent-soft)"/><rect x="22" y="22" width="12" height="12" rx="3" fill="var(--gold)"/></svg>
+          <h3><span class="en">Odoo Implementation</span><span class="ar">تطبيق أودو</span></h3>
+          <p><span class="en">End-to-end setup, configuration, and go-live across Sales, Inventory, Accounting, Manufacturing, and more — on any Odoo version, Community or Enterprise.</span><span class="ar">إعداد وتهيئة وتشغيل كامل عبر المبيعات والمخزون والمحاسبة والتصنيع وغيرها — على أي إصدار من أودو، مجتمعي أو مؤسسي.</span></p>
+        </div>
+        <div class="service-card">
+          <span class="service-num">02</span>
+          <svg class="service-icon" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="13" r="7" fill="var(--accent)"/><path d="M6 34c0-7.7 6.3-12 14-12s14 4.3 14 12" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/></svg>
+          <h3><span class="en">Training &amp; Enablement</span><span class="ar">تدريب وتمكين</span></h3>
+          <p><span class="en">Hands-on training for your team, from end-user workflows to admin-level configuration, taught by certified consultants.</span><span class="ar">تدريب عملي لفريقك، من واجهات المستخدم إلى إعدادات الإدارة، على يد استشاريين معتمدين.</span></p>
+        </div>
+        <div class="service-card">
+          <span class="service-num">03</span>
+          <svg class="service-icon" viewBox="0 0 40 40" fill="none"><path d="M8 20l6-12 6 12-6 12z" fill="var(--gold)"/><path d="M20 20l6-12 6 12-6 12z" fill="var(--accent-soft)"/></svg>
+          <h3><span class="en">Customization &amp; Development</span><span class="ar">التخصيص والتطوير</span></h3>
+          <p><span class="en">Custom modules, workflow automation, and integrations built to fit how your business actually operates.</span><span class="ar">وحدات مخصصة، وأتمتة لسير العمل، وتكاملات مصممة وفق طريقة عمل شركتك فعليًا.</span></p>
+        </div>
+        <div class="service-card">
+          <span class="service-num">04</span>
+          <svg class="service-icon" viewBox="0 0 40 40" fill="none"><rect x="8" y="6" width="24" height="28" rx="3" stroke="var(--accent)" stroke-width="2.5"/><line x1="13" y1="15" x2="27" y2="15" stroke="var(--accent)" stroke-width="2"/><line x1="13" y1="21" x2="27" y2="21" stroke="var(--accent)" stroke-width="2"/><line x1="13" y1="27" x2="21" y2="27" stroke="var(--gold)" stroke-width="2"/></svg>
+          <h3><span class="en">ZATCA &amp; KSA Compliance</span><span class="ar">الامتثال لهيئة الزكاة والضريبة</span></h3>
+          <p><span class="en">E-invoicing (Fatoora), VAT configuration, and localization built for Saudi regulatory requirements.</span><span class="ar">الفوترة الإلكترونية (فاتورة)، وإعداد ضريبة القيمة المضافة، والتوطين وفق المتطلبات التنظيمية السعودية.</span></p>
+        </div>
+        <div class="service-card">
+          <span class="service-num">05</span>
+          <svg class="service-icon" viewBox="0 0 40 40" fill="none"><path d="M10 14a10 10 0 0119-4" stroke="var(--accent)" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M30 26a10 10 0 01-19 4" stroke="var(--gold)" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M29 10l0-6 6 0" stroke="var(--accent)" stroke-width="2.5" fill="none"/><path d="M11 30l0 6-6 0" stroke="var(--gold)" stroke-width="2.5" fill="none"/></svg>
+          <h3><span class="en">Data Migration</span><span class="ar">ترحيل البيانات</span></h3>
+          <p><span class="en">Clean, validated migration from legacy systems or earlier Odoo releases into whichever version you are moving to.</span><span class="ar">ترحيل نظيف وموثّق من الأنظمة القديمة أو إصدارات أودو السابقة إلى الإصدار الذي تنتقل إليه.</span></p>
+        </div>
+        <div class="service-card">
+          <span class="service-num">06</span>
+          <svg class="service-icon" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="13" stroke="var(--accent)" stroke-width="2.5" fill="none"/><path d="M20 13v7l5 4" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round"/></svg>
+          <h3><span class="en">Support &amp; Optimization</span><span class="ar">الدعم المستمر والتحسين</span></h3>
+          <p><span class="en">Remote support retainers, performance tuning, and continuous improvement after go-live.</span><span class="ar">عقود دعم عن بُعد، وضبط الأداء، وتحسين مستمر بعد الإطلاق.</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WHY US ============ -->
+  <section id="why">
+    <div class="wrap reveal">
+      <div class="eyebrow"><span class="en">Why Silver Solutions</span><span class="ar">لماذا الحلول الفضية</span></div>
+      <h2 class="section-title"><span class="en">What working with us actually looks like.</span><span class="ar">كيف يبدو العمل معنا فعليًا.</span></h2>
+      <div class="why-grid">
+        <div class="why-card">
+          <div class="glyph"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4z" fill="var(--accent)"/></svg></div>
+          <div>
+            <h3><span class="en">Any version, Community or Enterprise</span><span class="ar">أي إصدار، مجتمعية أو مؤسسية</span></h3>
+            <p><span class="en">We implement and support every Odoo version, on Community or Enterprise. Our consultants are certified on Odoo 18 and 19, so the newest releases are covered by current credentials rather than guesswork.</span><span class="ar">ننفّذ وندعم جميع إصدارات أودو، على النسخة المجتمعية أو المؤسسية. واستشاريونا معتمدون في أودو 18 و19، فأحدث الإصدارات مغطاة بشهادات حديثة لا بالاجتهاد.</span></p>
+          </div>
+        </div>
+        <div class="why-card">
+          <div class="glyph"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="var(--accent)" stroke-width="2"/><path d="M12 3a9 15 0 010 18" stroke="var(--accent)" stroke-width="2" fill="none"/></svg></div>
+          <div>
+            <h3><span class="en">Fully remote, fully accountable</span><span class="ar">عن بُعد بالكامل، ومسؤولون بالكامل</span></h3>
+            <p><span class="en">No travel overhead, no idle bench time — every billed hour is delivery time, coordinated around your timezone.</span><span class="ar">بلا تكاليف سفر ولا وقت عمل مهدر — كل ساعة عمل هي ساعة تسليم فعلية، منسّقة مع توقيتك.</span></p>
+          </div>
+        </div>
+        <div class="why-card">
+          <div class="glyph"><svg viewBox="0 0 24 24" fill="none"><path d="M12 21s7-5.3 7-11a7 7 0 10-14 0c0 5.7 7 11 7 11z" stroke="var(--accent)" stroke-width="2" fill="none"/><circle cx="12" cy="10" r="2.5" fill="var(--accent)"/></svg></div>
+          <div>
+            <h3><span class="en">Global reach, Saudi depth</span><span class="ar">حضور عالمي، وعمق سعودي</span></h3>
+            <p><span class="en">We deliver to clients anywhere in the world. In Saudi Arabia we go further — Arabic-language support, ZATCA e-invoicing, and local business practice are built into every scope.</span><span class="ar">نخدم عملاءنا في أي مكان في العالم. وفي السعودية نذهب أبعد — الدعم بالعربية، والفوترة الإلكترونية (فاتورة)، وممارسات الأعمال المحلية جزء من كل نطاق عمل.</span></p>
+          </div>
+        </div>
+        <div class="why-card">
+          <div class="glyph"><svg viewBox="0 0 24 24" fill="none"><circle cx="8" cy="8" r="3" fill="var(--accent)"/><circle cx="16" cy="16" r="3" fill="var(--gold)"/><line x1="10.1" y1="10.1" x2="13.9" y2="13.9" stroke="var(--charcoal-700)" stroke-width="2"/></svg></div>
+          <div>
+            <h3><span class="en">Direct access to consultants</span><span class="ar">وصول مباشر للاستشاريين</span></h3>
+            <p><span class="en">You work with the certified expert doing the work — not a rotating account-management layer.</span><span class="ar">تعمل مباشرة مع الخبير المعتمد المنفّذ للعمل، دون طبقات إدارية وسيطة.</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CERT STRIP ============ -->
+  <section class="cert-strip" style="padding-block:0;">
+    <div class="wrap">
+      <span class="cert-label"><span class="en">Certified expertise our consultants hold</span><span class="ar">الشهادات المعتمدة التي يحملها استشاريونا</span></span>
+      <div class="cert-badges">
+        <span class="cert-badge"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 16.9l-5.8 3 1.1-6.5-4.7-4.6 6.5-.9z"/></svg><span class="en">Odoo 18 Certified Consultant</span><span class="ar">استشاري معتمد — أودو 18</span></span>
+        <span class="cert-badge"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 16.9l-5.8 3 1.1-6.5-4.7-4.6 6.5-.9z"/></svg><span class="en">Odoo 19 Certified Consultant</span><span class="ar">استشاري معتمد — أودو 19</span></span>
+        <span class="cert-badge"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 16.9l-5.8 3 1.1-6.5-4.7-4.6 6.5-.9z"/></svg><span class="en">Community &amp; Enterprise</span><span class="ar">المجتمعية والمؤسسية</span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROCESS ============ -->
+  <section id="process">
+    <div class="wrap reveal">
+      <div class="eyebrow"><span class="en">How We Work</span><span class="ar">منهجية العمل</span></div>
+      <h2 class="section-title"><span class="en">Five stages, one accountable team, start to finish.</span><span class="ar">خمس مراحل، وفريق واحد مسؤول من البداية للنهاية.</span></h2>
+      <div class="process-track">
+        <div class="process-line"></div>
+        <div class="process-steps">
+          <div class="step">
+            <div class="step-index">01</div>
+            <h3><span class="en">Discovery &amp; Scoping</span><span class="ar">الاكتشاف وتحديد النطاق</span></h3>
+            <p><span class="en">We map your processes and produce a clear business requirement document before any configuration starts.</span><span class="ar">نرسم عملياتك ونُعد وثيقة متطلبات عمل واضحة قبل بدء أي إعداد.</span></p>
+          </div>
+          <div class="step">
+            <div class="step-index">02</div>
+            <h3><span class="en">Configuration &amp; Build</span><span class="ar">الإعداد والبناء</span></h3>
+            <p><span class="en">Certified consultants configure and, where needed, develop custom functionality against the agreed scope.</span><span class="ar">استشاريون معتمدون يهيئون النظام ويطوّرون الوظائف المخصصة عند الحاجة، وفق النطاق المتفق عليه.</span></p>
+          </div>
+          <div class="step">
+            <div class="step-index">03</div>
+            <h3><span class="en">Training &amp; Testing</span><span class="ar">التدريب والاختبار</span></h3>
+            <p><span class="en">Your team is trained on the system before go-live, with structured testing to catch issues early.</span><span class="ar">يتم تدريب فريقك على النظام قبل الإطلاق، مع اختبار منظم لاكتشاف الملاحظات مبكرًا.</span></p>
+          </div>
+          <div class="step">
+            <div class="step-index">04</div>
+            <h3><span class="en">Go-Live</span><span class="ar">الإطلاق</span></h3>
+            <p><span class="en">A controlled cutover to the live system with a consultant on standby throughout.</span><span class="ar">انتقال منضبط إلى النظام الفعلي مع استشاري جاهز للدعم طوال العملية.</span></p>
+          </div>
+          <div class="step">
+            <div class="step-index">05</div>
+            <h3><span class="en">Support &amp; Optimization</span><span class="ar">الدعم والتحسين</span></h3>
+            <p><span class="en">Ongoing remote support to tune the system as your business evolves.</span><span class="ar">دعم مستمر عن بُعد لضبط النظام مع تطوّر عملك.</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TEAM ============ -->
+  <section id="team">
+    <div class="wrap reveal">
+      <div class="eyebrow"><span class="en">Who You'll Work With</span><span class="ar">من ستعمل معهم</span></div>
+      <h2 class="section-title"><span class="en">The people behind your project.</span><span class="ar">الأشخاص خلف مشروعك.</span></h2>
+      <p class="section-lede"><span class="en">You deal directly with the consultants doing the work — no account-management layer in between.</span><span class="ar">تتعامل مباشرة مع الاستشاريين المنفّذين للعمل، دون طبقات إدارية وسيطة.</span></p>
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="avatar-initials" aria-hidden="true">MR</div>
+          <h3><span class="en">Mohamed Ragab</span><span class="ar">محمد رجب</span></h3>
+          <span class="role-tag mono"><span class="en">Odoo 18 &amp; 19 Certified</span><span class="ar">معتمد — أودو 18 و19</span></span>
+          <p class="job"><span class="en">Implementation Lead</span><span class="ar">قائد التنفيذ</span></p>
+          <p class="desc"><span class="en">Accounting and costing expert. Leads each implementation from discovery through go-live.</span><span class="ar">خبير المحاسبة والتكاليف. يقود كل مشروع تنفيذ من مرحلة الاكتشاف حتى الإطلاق.</span></p>
+        </div>
+        <div class="team-card">
+          <div class="avatar-initials alt" aria-hidden="true">MO</div>
+          <h3><span class="en">Mohamed Osman</span><span class="ar">محمد عثمان</span></h3>
+          <span class="role-tag mono"><span class="en">Odoo Developer</span><span class="ar">مطوّر أودو</span></span>
+          <p class="job"><span class="en">Development</span><span class="ar">التطوير</span></p>
+          <p class="desc"><span class="en">Builds custom modules, workflow automation, and third-party integrations.</span><span class="ar">يبني الوحدات المخصصة، وأتمتة سير العمل، والتكاملات الخارجية.</span></p>
+        </div>
+        <div class="team-card">
+          <div class="avatar-initials" aria-hidden="true">RE</div>
+          <h3><span class="en">Ramez Elgohary</span><span class="ar">رامز الجوهري</span></h3>
+          <span class="role-tag mono"><span class="en">Support Head</span><span class="ar">رئيس الدعم</span></span>
+          <p class="job"><span class="en">Support &amp; Optimization</span><span class="ar">الدعم والتحسين</span></p>
+          <p class="desc"><span class="en">Runs post-go-live support and keeps your system tuned as the business changes.</span><span class="ar">يدير الدعم بعد الإطلاق ويحافظ على ضبط النظام مع تغيّر احتياجات العمل.</span></p>
+        </div>
+        <div class="team-card">
+          <div class="avatar-initials alt" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:26px;height:26px;">
+              <circle cx="9" cy="9" r="3.2"/><circle cx="17" cy="10.5" r="2.4"/>
+              <path d="M3 19c0-3.3 2.7-5.2 6-5.2s6 1.9 6 5.2"/><path d="M17 15.4c2.4 0 4 1.4 4 3.6"/>
+            </svg>
+          </div>
+          <h3><span class="en">Extended Team</span><span class="ar">الفريق الموسّع</span></h3>
+          <span class="role-tag mono"><span class="en">Consultants &amp; Trainers</span><span class="ar">استشاريون ومدرّبون</span></span>
+          <p class="job"><span class="en">Scaled to Your Scope</span><span class="ar">حسب حجم مشروعك</span></p>
+          <p class="desc"><span class="en">Functional consultants, trainers, and data-migration specialists who join as the project requires.</span><span class="ar">استشاريون وظيفيون ومدرّبون ومختصو ترحيل بيانات ينضمون حسب متطلبات المشروع.</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact">
+    <div class="wrap reveal">
+      <div class="contact-shell">
+        <div class="contact-copy">
+          <div class="eyebrow"><span class="en">Get In Touch</span><span class="ar">تواصل معنا</span></div>
+          <h2><span class="en">Let's scope your project.</span><span class="ar">لنحدد نطاق مشروعك.</span></h2>
+          <p><span class="en">Tell us where your business is today — we'll respond with a clear, no-obligation plan for what an Odoo implementation would look like, delivered remotely.</span><span class="ar">أخبرنا أين يقف عملك اليوم، وسنرد بخطة واضحة وغير ملزمة لما قد يبدو عليه تطبيق أودو عن بُعد.</span></p>
+        </div>
+        <div>
+          <div class="contact-tiles">
+            <a class="contact-tile" href="mailto:info@silversolutionserp.com">
+              <span class="tile-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="M3 6.5l9 6 9-6"/>
+                </svg>
+              </span>
+              <span>
+                <span class="field-label"><span class="en">Email</span><span class="ar">البريد الإلكتروني</span></span>
+                <span class="field-value">info@silversolutionserp.com</span>
+              </span>
+            </a>
+            <a class="contact-tile" href="tel:+966547032483">
+              <span class="tile-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 16.9v2.6a1.8 1.8 0 01-2 1.8 17.6 17.6 0 01-7.7-2.7 17.3 17.3 0 01-5.3-5.3A17.6 17.6 0 013.3 5.6 1.8 1.8 0 015.1 3.6h2.6a1.8 1.8 0 011.8 1.6c.1.9.3 1.7.6 2.5a1.8 1.8 0 01-.4 1.9l-1.1 1.1a14.2 14.2 0 005.3 5.3l1.1-1.1a1.8 1.8 0 011.9-.4c.8.3 1.6.5 2.5.6a1.8 1.8 0 011.6 1.8z"/>
+                </svg>
+              </span>
+              <span>
+                <span class="field-label"><span class="en">Phone</span><span class="ar">الهاتف</span></span>
+                <span class="field-value">+966 54 703 2483</span>
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer-row">
+    <span class="footer-copy"><span class="en">© 2026 Silver Solutions — Odoo Certified Partner. Worldwide delivery, Saudi market focus.</span><span class="ar">© 2026 الحلول الفضية — شريك أودو معتمد، خدمات حول العالم بتركيز على السوق السعودي.</span></span>
+    <div class="footer-links">
+      <a href="#about"><span class="en">About</span><span class="ar">من نحن</span></a>
+      <a href="#services"><span class="en">Services</span><span class="ar">خدماتنا</span></a>
+      <a href="#contact"><span class="en">Contact</span><span class="ar">تواصل</span></a>
+      <a href="mailto:info@silversolutionserp.com" dir="ltr">info@silversolutionserp.com</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var html = document.documentElement;
+  function setLang(lang){
+    html.setAttribute('data-lang', lang);
+    html.setAttribute('lang', lang);
+    html.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+    document.querySelectorAll('[data-lang-btn]').forEach(function(btn){
+      btn.setAttribute('aria-pressed', btn.getAttribute('data-lang-btn') === lang ? 'true' : 'false');
+    });
+    try{ localStorage.setItem('ss-lang', lang); }catch(e){}
+  }
+  var saved = 'en';
+  try{ saved = localStorage.getItem('ss-lang') || 'en'; }catch(e){}
+  setLang(saved);
+
+  document.querySelectorAll('[data-lang-btn]').forEach(function(btn){
+    btn.addEventListener('click', function(){ setLang(btn.getAttribute('data-lang-btn')); });
+  });
+
+  var systemDark = window.matchMedia('(prefers-color-scheme: dark)');
+  function currentTheme(){
+    var set = html.getAttribute('data-theme');
+    if(set) return set;
+    return systemDark.matches ? 'dark' : 'light';
+  }
+  function setTheme(theme){
+    html.setAttribute('data-theme', theme);
+    try{ localStorage.setItem('ss-theme', theme); }catch(e){}
+  }
+  try{
+    var savedTheme = localStorage.getItem('ss-theme');
+    if(savedTheme) html.setAttribute('data-theme', savedTheme);
+  }catch(e){}
+  document.getElementById('themeToggle').addEventListener('click', function(){
+    setTheme(currentTheme() === 'dark' ? 'light' : 'dark');
+  });
+
+  var stage = document.getElementById('markStage');
+  requestAnimationFrame(function(){ stage.classList.add('is-in'); });
+
+  var menuBtn = document.getElementById('menuToggle');
+  var mobileMenu = document.getElementById('mobileMenu');
+  menuBtn.addEventListener('click', function(){
+    var open = mobileMenu.style.display === 'flex';
+    mobileMenu.style.display = open ? 'none' : 'flex';
+    menuBtn.setAttribute('aria-expanded', String(!open));
+  });
+  mobileMenu.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){ mobileMenu.style.display = 'none'; });
+  });
+
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('is-visible'); });
+  }
+})();
+</script>
